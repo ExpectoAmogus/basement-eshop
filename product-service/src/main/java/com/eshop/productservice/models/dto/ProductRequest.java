@@ -1,12 +1,16 @@
 package com.eshop.productservice.models.dto;
 
+import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.models.entity.ProductSpec;
-import com.eshop.productservice.models.enums.Category;
+
+import java.math.BigDecimal;
 
 public record ProductRequest(
         String name,
         String code,
-        Category category,
-        ProductSpec spec
+        String description,
+        ProductCategory category,
+        ProductSpec spec,
+        BigDecimal price
 ) {
 }
