@@ -1,5 +1,7 @@
 package com.eshop.productservice.models.entity;
 
+import com.eshop.productservice.models.dto.ProductCategoryDto;
+import com.eshop.productservice.models.dto.ProductCategoryResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -13,7 +15,8 @@ import java.math.BigDecimal;
 @Setter
 @Table(name = "products")
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product extends BaseEntity {
 
     @Column(name = "p_code")
@@ -37,4 +40,12 @@ public class Product extends BaseEntity {
 
     @Column(name = "p_price")
     private BigDecimal price;
+
+    public ProductCategoryResponse getProductCategoryResponse(){
+        return new ProductCategoryResponse(
+                category.getId(),
+                category.getName(),
+                category.getParent()
+        );
+    }
 }

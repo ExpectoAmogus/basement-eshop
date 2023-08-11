@@ -9,7 +9,8 @@ import lombok.*;
 @Setter
 @Table(name = "specs")
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductSpec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
