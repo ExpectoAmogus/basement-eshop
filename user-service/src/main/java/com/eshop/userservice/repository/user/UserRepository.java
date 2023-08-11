@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends BaseRepository<User> {
+public interface UserRepository extends BaseUserRepository<User> {
 
     List<User> findAll();
 
