@@ -3,6 +3,7 @@ package com.eshop.productservice.service.impl;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.models.entity.Product;
+import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.repositories.ProductRepository;
@@ -25,11 +26,7 @@ public class ProductService {
     private final ProductCategoryMapper categoryMapper;
 
     public void createProduct(ProductRequest productRequest){
-        if (!categoryService.getAllCategories()
-                .stream()
-                .map(categoryMapper)
-                .toList()
-                .contains(productRequest.category())){
+        if (!categoryExists(productRequest)){
             log.warn("Could not find category {}, creating new one...", productRequest.category().getName());
             categoryService.createCategory(productRequest.category().getName(), productRequest.category().getParent());
         }
@@ -51,6 +48,14 @@ public class ProductService {
                 .stream()
                 .map(productResponseMapper)
                 .toList();
+    }
+
+    private boolean categoryExists(ProductRequest productRequest) {
+        return categoryService.getAllCategories()
+                .stream()
+                .map(categoryMapper)
+                .toList()
+                .contains(productRequest.category());
     }
 
 }
