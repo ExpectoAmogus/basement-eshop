@@ -1,5 +1,7 @@
 package com.eshop.productservice.service.impl;
 
+import com.eshop.productservice.models.dto.ProductCategoryDto;
+import com.eshop.productservice.models.dto.ProductCategoryResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.models.entity.Product;
@@ -23,19 +25,30 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryService categoryService;
     private final ProductResponseMapper productResponseMapper;
-    private final ProductCategoryMapper categoryMapper;
+    private final ProductCategoryMapper<ProductCategoryResponse, ProductCategoryDto> categoryDtoMapper;
 
     public void createProduct(ProductRequest productRequest){
+        ProductCategoryResponse categoryResponse;
+        ProductCategory category;
         if (!categoryExists(productRequest)){
-            log.warn("Could not find category {}, creating new one...", productRequest.category().getName());
-            categoryService.createCategory(productRequest.category().getName(), productRequest.category().getParent());
+            log.warn("Could not find category {}, creating new one...", productRequest.category().name());
+            category = categoryService.createCategory(productRequest.category().name(), productRequest.category().parent());
         }
+        else {
+            categoryResponse = categoryService.findById(productRequest.category().id());
+            category = ProductCategory.builder()
+                    .id(categoryResponse.id())
+                    .name(categoryResponse.name())
+                    .parent(categoryResponse.parent())
+                    .build();
+        }
+
         Product product = Product.builder()
                 .name(productRequest.name())
                 .code(productRequest.code())
                 .description(productRequest.description())
                 .spec(productRequest.spec())
-                .category(productRequest.category())
+                .category(category)
                 .price(productRequest.price())
                 .build();
 
@@ -53,7 +66,7 @@ public class ProductService {
     private boolean categoryExists(ProductRequest productRequest) {
         return categoryService.getAllCategories()
                 .stream()
-                .map(categoryMapper)
+                .map(categoryDtoMapper)
                 .toList()
                 .contains(productRequest.category());
     }
