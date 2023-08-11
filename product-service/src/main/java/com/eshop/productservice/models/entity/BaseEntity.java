@@ -2,10 +2,14 @@ package com.eshop.productservice.models.entity;
 
 import lombok.Data;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

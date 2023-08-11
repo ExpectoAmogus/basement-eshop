@@ -2,18 +2,18 @@ package com.eshop.productservice.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "specs")
 @Builder
 @RequiredArgsConstructor
-public class ProductSpec extends BaseEntity {
+public class ProductSpec {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "spec")
     @JsonBackReference
