@@ -14,8 +14,10 @@ public class ProductResponseMapper implements Function<Product, ProductResponse>
                 product.getId(),
                 product.getName(),
                 product.getCode(),
+                product.getDescription(),
                 product.getCategory(),
-                product.getSpec()
+                product.getSpec(),
+                product.getPrice()
                 );
     }
 }
