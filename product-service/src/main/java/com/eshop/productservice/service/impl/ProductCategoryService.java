@@ -37,4 +37,16 @@ public class ProductCategoryService {
                 .map(categoryResponseMapper)
                 .toList();
     }
+
+    public ProductCategoryResponse findById(Long id){
+        return categoryRepository.findById(id)
+                .map(categoryResponseMapper)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public ProductCategoryResponse findByNameAndParent(String name, ProductCategory parent){
+        return categoryRepository.findByNameAndParent(name, parent)
+                .map(categoryResponseMapper)
+                .orElseThrow(EntityNotFoundException::new);
+    }
 }
