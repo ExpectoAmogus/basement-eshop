@@ -3,6 +3,7 @@ package com.eshop.userservice.service;
 import com.eshop.userservice.models.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService extends  BaseUserService<User>{
 

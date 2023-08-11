@@ -1,49 +1,26 @@
 package com.eshop.userservice.service.impl;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.eshop.userservice.models.entity.User;
-import com.eshop.userservice.service.UserService;
-import org.springframework.stereotype.Service;
 import com.eshop.userservice.repository.user.UserRepository;
+import com.eshop.userservice.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public UserServiceImpl(
-            UserRepository userRepository,
-            BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
 
     @Override
-   boolean existsByEmail(String email){
-        return userRepository.existsByEmail(email);
-    }
-
-    @Override
-    User findByEmail(String email){}
-
-    @Override
-    List<User> findAllByListId(List<Long> ids){}
-
-    @Override
-    List<User> findAll(){
+    public void create(User user) {
 
     }
-
-    @Override
-    boolean isEnable(Long id, boolean enable);
-
-    @Override
-    public void create(User user) {}
 
     @Override
     public void update(User user) {
@@ -58,5 +35,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return null;
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return false;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return null;
+    }
+
+    @Override
+    public List<User> findAllByListId(List<Long> ids) {
+        return null;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return null;
+    }
+
+    @Override
+    public boolean isEnable(Long id, boolean enable) {
+        return false;
     }
 }
