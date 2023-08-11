@@ -1,7 +1,7 @@
 package com.eshop.productservice.controller;
 
 import com.eshop.productservice.models.dto.ProductResponse;
-import com.eshop.productservice.service.impl.ProductServiceImpl;
+import com.eshop.productservice.service.impl.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/products")
 public class ProductController {
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
     @GetMapping("/all")
     public ResponseEntity<List<ProductResponse>> getProducts(){
