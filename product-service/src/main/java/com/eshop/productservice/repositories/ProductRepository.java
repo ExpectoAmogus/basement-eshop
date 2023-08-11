@@ -1,4 +1,4 @@
-package com.eshop.productservice.service;
+package com.eshop.productservice.repositories;
 
 import com.eshop.productservice.models.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
