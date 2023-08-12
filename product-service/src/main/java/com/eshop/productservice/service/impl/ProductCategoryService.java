@@ -3,7 +3,6 @@ package com.eshop.productservice.service.impl;
 import com.eshop.productservice.models.dto.ProductCategoryDto;
 import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.models.mappers.ProductCategoryDtoMapper;
-import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.repositories.ProductCategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
