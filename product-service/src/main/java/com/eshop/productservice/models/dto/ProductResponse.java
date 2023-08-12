@@ -1,7 +1,5 @@
 package com.eshop.productservice.models.dto;
 
-import com.eshop.productservice.models.entity.ProductSpec;
-
 import java.math.BigDecimal;
 
 public record ProductResponse(
