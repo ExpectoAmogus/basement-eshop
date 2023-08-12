@@ -1,6 +1,7 @@
 package com.eshop.productservice.models.entity;
 
 import com.eshop.productservice.models.dto.ProductCategoryDto;
+import com.eshop.productservice.models.dto.ProductSpecDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -27,9 +28,9 @@ public class Product extends BaseEntity {
     @Column(name = "p_desc", columnDefinition = "text")
     private String description;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn
-    @JsonManagedReference
+    @JsonBackReference
     private ProductSpec spec;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,6 +46,18 @@ public class Product extends BaseEntity {
                 category.getId(),
                 category.getName(),
                 category.getParent()
+        );
+    }
+
+    public ProductSpecDto getProductSpecDto(){
+        return new ProductSpecDto(
+                spec.getSize(),
+                spec.getColor(),
+                spec.getSex(),
+                spec.getSleeve(),
+                spec.getPantLength(),
+                spec.getHeadGirth(),
+                spec.getLiftingHeight()
         );
     }
 }
