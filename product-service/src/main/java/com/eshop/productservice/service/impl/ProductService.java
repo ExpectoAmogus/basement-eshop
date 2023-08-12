@@ -4,8 +4,11 @@ import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.models.entity.Product;
 import com.eshop.productservice.models.entity.ProductCategory;
+import com.eshop.productservice.models.entity.ProductSpec;
+import com.eshop.productservice.models.enums.ProductCategoryEnum;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.repositories.ProductRepository;
+import com.eshop.productservice.repositories.ProductSpecRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,31 +22,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
+    private final ProductSpecService productSpecService;
     private final ProductRepository productRepository;
     private final ProductCategoryService categoryService;
     private final ProductResponseMapper productResponseMapper;
 
     public void createProduct(ProductRequest productRequest){
-//        ProductCategoryResponse categoryResponse;
         ProductCategory category;
+        ProductSpec productSpec = null;
         if (!categoryExists(productRequest)){
             log.warn("Could not find category {}, creating new one...", productRequest.category().name());
             category = categoryService.createCategory(productRequest.category().name(), productRequest.category().parent());
         }
         else {
-//            categoryResponse = categoryService.findById(productRequest.category().id());
             category = ProductCategory.builder()
                     .id(productRequest.category().id())
                     .name(productRequest.category().name())
                     .parent(productRequest.category().parent())
                     .build();
         }
-
+        productSpec = productSpecService.createSpec(productRequest.spec());
         Product product = Product.builder()
                 .name(productRequest.name())
                 .code(productRequest.code())
                 .description(productRequest.description())
-                .spec(productRequest.spec())
+                .spec(productSpec)
                 .category(category)
                 .price(productRequest.price())
                 .build();

@@ -10,7 +10,7 @@ public record ProductResponse(
         String code,
         String description,
         ProductCategoryDto category,
-        ProductSpec spec,
+        ProductSpecDto spec,
         BigDecimal price
 ) {
 
