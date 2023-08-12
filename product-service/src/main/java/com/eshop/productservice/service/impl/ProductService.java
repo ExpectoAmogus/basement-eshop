@@ -1,14 +1,21 @@
 package com.eshop.productservice.service.impl;
 
+import com.eshop.productservice.models.dto.ProductCategoryDto;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
+import com.eshop.productservice.models.dto.ProductSpecDto;
+import com.eshop.productservice.models.dto.specDtos.BodyDto;
+import com.eshop.productservice.models.dto.specDtos.BootsDto;
+import com.eshop.productservice.models.dto.specDtos.HeadDto;
+import com.eshop.productservice.models.dto.specDtos.PantsDto;
 import com.eshop.productservice.models.entity.Product;
 import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.models.entity.ProductSpec;
-import com.eshop.productservice.models.enums.ProductCategoryEnum;
+import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
+import com.eshop.productservice.models.mappers.ProductSpecMapper;
 import com.eshop.productservice.repositories.ProductRepository;
-import com.eshop.productservice.repositories.ProductSpecRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,26 +29,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductSpecService productSpecService;
     private final ProductRepository productRepository;
     private final ProductCategoryService categoryService;
     private final ProductResponseMapper productResponseMapper;
+    private final ProductCategoryMapper productCategoryMapper;
+    private final ProductSpecMapper productSpecMapper;
 
     public void createProduct(ProductRequest productRequest){
         ProductCategory category;
-        ProductSpec productSpec = null;
+        ProductSpec productSpec;
         if (!categoryExists(productRequest)){
             log.warn("Could not find category {}, creating new one...", productRequest.category().name());
-            category = categoryService.createCategory(productRequest.category().name(), productRequest.category().parent());
+            category = productCategoryMapper.apply(categoryService.createCategory(productRequest.category()));
         }
         else {
-            category = ProductCategory.builder()
-                    .id(productRequest.category().id())
-                    .name(productRequest.category().name())
-                    .parent(productRequest.category().parent())
-                    .build();
+            category = productCategoryMapper.apply(categoryService.findByNameAndParentId(productRequest.category().name(),productRequest.category().parentId()));
         }
-        productSpec = productSpecService.createSpec(productRequest.spec());
+
+        ProductSpecDto specDto = productRequest.spec();
+        productSpec = productSpecMapper.apply(specDto);
+
         Product product = Product.builder()
                 .name(productRequest.name())
                 .code(productRequest.code())
@@ -64,7 +71,10 @@ public class ProductService {
 
     private boolean categoryExists(ProductRequest productRequest) {
         return categoryService.getAllCategories()
-                .contains(productRequest.category());
+                .stream()
+                .map(ProductCategoryDto::name)
+                .toList()
+                .contains(productRequest.category().name());
     }
 
 }

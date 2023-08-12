@@ -3,6 +3,7 @@ package com.eshop.productservice.service.impl;
 import com.eshop.productservice.models.dto.ProductCategoryDto;
 import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.models.mappers.ProductCategoryDtoMapper;
+import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.repositories.ProductCategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,14 +22,23 @@ public class ProductCategoryService {
     private final ProductCategoryDtoMapper categoryDtoMapper;
 
 
-    public ProductCategory createCategory(String categoryName, ProductCategory parent){
+    public ProductCategoryDto createCategory(ProductCategoryDto productCategoryDto){
+        Long parentId = null;
+        if (productCategoryDto.parentId() != null){
+            ProductCategory parentCategory = categoryRepository.findById(productCategoryDto.parentId()).orElse(null);
+            if (parentCategory != null){
+                parentId = parentCategory.getId();
+            }
+
+        }
         ProductCategory category = ProductCategory.builder()
-                .name(categoryName)
-                .parent(parent)
+                .name(productCategoryDto.name())
+                .parentId(parentId)
                 .build();
 
-        log.info("Category {} is saved", category.getName());
-        return categoryRepository.save(category);
+        ProductCategory savedCategory = categoryRepository.save(category);
+        log.info("Category {} is saved", savedCategory.getName());
+        return categoryDtoMapper.apply(savedCategory);
     }
 
     public List<ProductCategoryDto> getAllCategories(){
@@ -44,9 +54,9 @@ public class ProductCategoryService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public ProductCategoryDto findByNameAndParent(String name, ProductCategory parent){
-        return categoryRepository.findByNameAndParent(name, parent)
+    public ProductCategoryDto findByNameAndParentId(String name, Long parentId){
+        return categoryRepository.findByNameAndParentId(name, parentId)
                 .map(categoryDtoMapper)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElse(null);
     }
 }
