@@ -1,8 +1,8 @@
 package com.eshop.productservice.service.impl;
 
-import com.eshop.productservice.models.dto.ProductCategoryResponse;
+import com.eshop.productservice.models.dto.ProductCategoryDto;
 import com.eshop.productservice.models.entity.ProductCategory;
-import com.eshop.productservice.models.mappers.ProductCategoryMapper;
+import com.eshop.productservice.models.mappers.ProductCategoryDtoMapper;
 import com.eshop.productservice.repositories.ProductCategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductCategoryService {
     private final ProductCategoryRepository categoryRepository;
-    private final ProductCategoryMapper<ProductCategory, ProductCategoryResponse> categoryResponseMapper;
+    private final ProductCategoryDtoMapper categoryDtoMapper;
 
 
     public ProductCategory createCategory(String categoryName, ProductCategory parent){
@@ -31,22 +31,22 @@ public class ProductCategoryService {
         return categoryRepository.save(category);
     }
 
-    public List<ProductCategoryResponse> getAllCategories(){
+    public List<ProductCategoryDto> getAllCategories(){
         return categoryRepository.findAll()
                 .stream()
-                .map(categoryResponseMapper)
+                .map(categoryDtoMapper)
                 .toList();
     }
 
-    public ProductCategoryResponse findById(Long id){
+    public ProductCategoryDto findById(Long id){
         return categoryRepository.findById(id)
-                .map(categoryResponseMapper)
+                .map(categoryDtoMapper)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public ProductCategoryResponse findByNameAndParent(String name, ProductCategory parent){
+    public ProductCategoryDto findByNameAndParent(String name, ProductCategory parent){
         return categoryRepository.findByNameAndParent(name, parent)
-                .map(categoryResponseMapper)
+                .map(categoryDtoMapper)
                 .orElseThrow(EntityNotFoundException::new);
     }
 }

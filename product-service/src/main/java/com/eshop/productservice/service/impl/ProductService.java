@@ -1,12 +1,9 @@
 package com.eshop.productservice.service.impl;
 
-import com.eshop.productservice.models.dto.ProductCategoryDto;
-import com.eshop.productservice.models.dto.ProductCategoryResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.models.entity.Product;
 import com.eshop.productservice.models.entity.ProductCategory;
-import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -25,21 +22,20 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryService categoryService;
     private final ProductResponseMapper productResponseMapper;
-    private final ProductCategoryMapper<ProductCategoryResponse, ProductCategoryDto> categoryDtoMapper;
 
     public void createProduct(ProductRequest productRequest){
-        ProductCategoryResponse categoryResponse;
+//        ProductCategoryResponse categoryResponse;
         ProductCategory category;
         if (!categoryExists(productRequest)){
             log.warn("Could not find category {}, creating new one...", productRequest.category().name());
             category = categoryService.createCategory(productRequest.category().name(), productRequest.category().parent());
         }
         else {
-            categoryResponse = categoryService.findById(productRequest.category().id());
+//            categoryResponse = categoryService.findById(productRequest.category().id());
             category = ProductCategory.builder()
-                    .id(categoryResponse.id())
-                    .name(categoryResponse.name())
-                    .parent(categoryResponse.parent())
+                    .id(productRequest.category().id())
+                    .name(productRequest.category().name())
+                    .parent(productRequest.category().parent())
                     .build();
         }
 
@@ -65,9 +61,6 @@ public class ProductService {
 
     private boolean categoryExists(ProductRequest productRequest) {
         return categoryService.getAllCategories()
-                .stream()
-                .map(categoryDtoMapper)
-                .toList()
                 .contains(productRequest.category());
     }
 
