@@ -18,7 +18,6 @@ public class ProductCategory {
     @Column(name = "c_name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private ProductCategory parent;
+    @Column(name = "parent_id")
+    private Long parentId;
 }
