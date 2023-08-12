@@ -14,7 +14,7 @@ public class ProductCategoryDtoMapper implements Function<ProductCategory, Produ
         return new ProductCategoryDto(
                 productCategory.getId(),
                 productCategory.getName(),
-                productCategory.getParent()
+                productCategory.getParentId()
         );
     }
 }
