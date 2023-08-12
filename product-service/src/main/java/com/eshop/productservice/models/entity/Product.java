@@ -1,7 +1,6 @@
 package com.eshop.productservice.models.entity;
 
 import com.eshop.productservice.models.dto.ProductCategoryDto;
-import com.eshop.productservice.models.dto.ProductCategoryResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -41,8 +40,8 @@ public class Product extends BaseEntity {
     @Column(name = "p_price")
     private BigDecimal price;
 
-    public ProductCategoryResponse getProductCategoryResponse(){
-        return new ProductCategoryResponse(
+    public ProductCategoryDto getProductCategoryDto(){
+        return new ProductCategoryDto(
                 category.getId(),
                 category.getName(),
                 category.getParent()

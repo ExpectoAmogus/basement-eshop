@@ -1,6 +1,5 @@
 package com.eshop.productservice.models.entity;
 
-import lombok.Data;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
