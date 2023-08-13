@@ -21,6 +21,7 @@
     <module>cart-service</module>
     <module>ticket-service</module>
     <module>article-service</module>
+    <module>image-service</module>
   </modules>
 
   <name>basement-shop</name>
