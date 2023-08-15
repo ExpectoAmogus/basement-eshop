@@ -29,7 +29,7 @@ public class ImageController {
     public ResponseEntity<List<String>> uploadImage(
             @PathVariable String type,
             @PathVariable Long entityId,
-            @RequestParam List<MultipartFile> files) {
+            @RequestParam(name = "images") List<MultipartFile> files) {
         ImageRequestDto imageRequestDto = new ImageRequestDto(type, entityId);
         return imageService.uploadImage(files, imageRequestDto);
     }
