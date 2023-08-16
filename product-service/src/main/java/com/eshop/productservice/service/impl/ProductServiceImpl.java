@@ -11,6 +11,8 @@ import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.models.mappers.ProductSpecMapper;
 import com.eshop.productservice.repositories.ProductRepository;
+import com.eshop.productservice.service.ProductCategoryService;
+import com.eshop.productservice.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +24,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductCategoryService categoryService;
@@ -30,7 +32,8 @@ public class ProductService {
     private final ProductCategoryMapper productCategoryMapper;
     private final ProductSpecMapper productSpecMapper;
 
-    public void createProduct(ProductRequest productRequest){
+    @Override
+    public ProductResponse createProduct(ProductRequest productRequest){
         ProductCategory category;
         ProductSpec productSpec;
         if (!categoryExists(productRequest)){
@@ -38,7 +41,12 @@ public class ProductService {
             category = productCategoryMapper.apply(categoryService.createCategory(productRequest.category()));
         }
         else {
-            category = productCategoryMapper.apply(categoryService.findByNameAndParentId(productRequest.category().name(),productRequest.category().parentId()));
+            category = productCategoryMapper.apply(
+                    categoryService.findByNameAndParentId(
+                            productRequest.category().name(),
+                            productRequest.category().parentId()
+                    )
+            );
         }
 
         ProductSpecDto specDto = productRequest.spec();
@@ -55,8 +63,10 @@ public class ProductService {
 
         productRepository.save(product);
         log.info("Product {} is created", product.getId());
+        return productResponseMapper.apply(product);
     }
 
+    @Override
     public List<ProductResponse> getProducts(){
         return productRepository.findAll()
                 .stream()
