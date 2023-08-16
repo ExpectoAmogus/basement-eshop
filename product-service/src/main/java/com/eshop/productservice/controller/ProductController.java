@@ -2,7 +2,8 @@ package com.eshop.productservice.controller;
 
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
-import com.eshop.productservice.service.impl.ProductService;
+import com.eshop.productservice.service.ProductService;
+import com.eshop.productservice.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ProductController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody ProductRequest productRequest){
-        productService.createProduct(productRequest);
+    public ProductResponse createProduct(@RequestBody ProductRequest productRequest){
+        return productService.createProduct(productRequest);
     }
 }
