@@ -1,18 +1,19 @@
 package com.eshop.articleservice.service.impl;
 
-import com.eshop.articleservice.models.entity.Article;
+import com.eshop.articleservice.models.dto.ArticleRequest;
+import com.eshop.articleservice.models.dto.ArticleResponse;
 import com.eshop.articleservice.service.ArticleService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ArticleServiceImpl implements ArticleService<Article> {
+public class ArticleServiceImpl implements ArticleService {
     @Override
-    public void create(Article article) {
+    public void create(ArticleRequest articleRequest) {
 
     }
 
     @Override
-    public void update(Article article) {
+    public void update(ArticleRequest articleRequest) {
 
     }
 
@@ -22,7 +23,7 @@ public class ArticleServiceImpl implements ArticleService<Article> {
     }
 
     @Override
-    public Article findById(Long id) {
+    public ArticleResponse findById(Long id) {
         return null;
     }
 }
