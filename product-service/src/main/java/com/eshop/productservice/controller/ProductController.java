@@ -1,5 +1,6 @@
 package com.eshop.productservice.controller;
 
+import com.eshop.productservice.models.dto.ProductCreateResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.service.ProductService;
@@ -24,7 +25,7 @@ public class ProductController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductResponse createProduct(@RequestBody ProductRequest productRequest){
+    public ProductCreateResponse createProduct(@RequestBody ProductRequest productRequest){
         return productService.createProduct(productRequest);
     }
 }
