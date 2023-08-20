@@ -1,9 +1,6 @@
 package com.eshop.productservice.service.impl;
 
-import com.eshop.productservice.models.dto.ProductCategoryDto;
-import com.eshop.productservice.models.dto.ProductRequest;
-import com.eshop.productservice.models.dto.ProductResponse;
-import com.eshop.productservice.models.dto.ProductSpecDto;
+import com.eshop.productservice.models.dto.*;
 import com.eshop.productservice.models.entity.Product;
 import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.models.entity.ProductSpec;
@@ -17,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -31,16 +29,16 @@ public class ProductServiceImpl implements ProductService {
     private final ProductResponseMapper productResponseMapper;
     private final ProductCategoryMapper productCategoryMapper;
     private final ProductSpecMapper productSpecMapper;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
-    public ProductResponse createProduct(ProductRequest productRequest){
+    public ProductCreateResponse createProduct(ProductRequest productRequest) {
         ProductCategory category;
         ProductSpec productSpec;
-        if (!categoryExists(productRequest)){
+        if (!categoryExists(productRequest)) {
             log.warn("Could not find category {}, creating new one...", productRequest.category().name());
             category = productCategoryMapper.apply(categoryService.createCategory(productRequest.category()));
-        }
-        else {
+        } else {
             category = productCategoryMapper.apply(
                     categoryService.findByNameAndParentId(
                             productRequest.category().name(),
@@ -60,14 +58,24 @@ public class ProductServiceImpl implements ProductService {
                 .category(category)
                 .price(productRequest.price())
                 .build();
-
         productRepository.save(product);
+
+        webClientBuilder.build().post()
+                .uri("http://inventory-service/api/inventory/add",
+                        uriBuilder -> uriBuilder
+                                .queryParam("code", productRequest.code())
+                                .queryParam("quantity", productRequest.quantity())
+                                .build())
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+
         log.info("Product {} is created", product.getId());
-        return productResponseMapper.apply(product);
+        return new ProductCreateResponse(product.getId(), product.getCode());
     }
 
     @Override
-    public List<ProductResponse> getProducts(){
+    public List<ProductResponse> getProducts() {
         return productRepository.findAll()
                 .stream()
                 .map(productResponseMapper)
