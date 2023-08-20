@@ -19,13 +19,19 @@ public class ProductController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductResponse> getProducts(){
+    public List<ProductResponse> get(){
         return productService.getProducts();
     }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductCreateResponse createProduct(@RequestBody ProductRequest productRequest){
+    public ProductCreateResponse create(@RequestBody ProductRequest productRequest){
         return productService.createProduct(productRequest);
+    }
+
+    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void update(@PathVariable Long id, @RequestBody ProductRequest productRequest){
+        productService.updateProduct(id, productRequest);
     }
 }
