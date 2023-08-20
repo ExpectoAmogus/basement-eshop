@@ -13,6 +13,7 @@ import com.eshop.productservice.models.entity.specsEntitty.PantsSpec;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "products")
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product extends BaseEntity {
