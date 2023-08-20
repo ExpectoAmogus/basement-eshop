@@ -10,17 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-@MappedSuperclass
+@Entity
 @Getter
 @Setter
 @Table(name = "users")
-public class BaseUser implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateOfCreated;
+public class BaseUser extends BaseEntity implements UserDetails{
 
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
@@ -34,11 +28,6 @@ public class BaseUser implements UserDetails {
 
     @Column(name = "ENABLED", nullable = false)
     private Boolean enabled; // Это если надо будет бан( у меня есть готовая система бан-анбан), потом если что убрать
-
-    @PrePersist
-    protected void init() {
-        dateOfCreated = LocalDateTime.now();
-    }
 
     public BaseUser() {
         super();
