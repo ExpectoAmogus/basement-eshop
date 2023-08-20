@@ -8,6 +8,7 @@ public record ProductRequest(
         String description,
         ProductCategoryDto category,
         ProductSpecDto spec,
-        BigDecimal price
+        BigDecimal price,
+        Integer quantity
 ) {
 }
