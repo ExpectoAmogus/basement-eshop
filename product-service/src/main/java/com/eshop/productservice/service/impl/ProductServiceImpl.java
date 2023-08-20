@@ -75,6 +75,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void updateProduct(Long id, ProductRequest productRequest) {
+        Product product = productRepository.findById(id).orElse(null); // TODO: поменять
+        assert product != null;
+        product = Product.builder()
+                .id(product.getId())
+                .code(productRequest.code())
+                .name(productRequest.name())
+                .description(productRequest.description())
+                .spec(productSpecMapper.apply(productRequest.spec()))
+                .category(productCategoryMapper.apply(productRequest.category()))
+                .price(productRequest.price())
+                .build();
+        productRepository.save(product);
+
+        webClientBuilder.build().put()
+                .uri("http://inventory-service/api/inventory/update",
+                        uriBuilder -> uriBuilder
+                                .queryParam("code", productRequest.code())
+                                .queryParam("quantity", productRequest.quantity())
+                                .build())
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+
+        log.info("Product {} is updated", product.getId());
+    }
+
+    @Override
     public List<ProductResponse> getProducts() {
         return productRepository.findAll()
                 .stream()
