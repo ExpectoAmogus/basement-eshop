@@ -4,8 +4,6 @@ import com.eshop.productservice.facade.ProductFacade;
 import com.eshop.productservice.models.dto.ProductCreateResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
-import com.eshop.productservice.service.ProductService;
-import com.eshop.productservice.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
