@@ -9,6 +9,7 @@ import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.models.mappers.ProductSpecMapper;
 import com.eshop.productservice.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,43 +39,42 @@ public class ProductFacadeImpl implements ProductFacade {
                 .build();
         productService.createProduct(product);
 
-        webClientBuilder.build().post()
-                .uri("http://inventory-service/api/inventory/add",
-                        uriBuilder -> uriBuilder
-                                .queryParam("code", productRequest.code())
-                                .queryParam("quantity", productRequest.quantity())
-                                .build())
-                .retrieve()
-                .toBodilessEntity()
-                .block();
+        updateInventory(
+                webClientBuilder.build().post(),
+                "http://inventory-service/api/inventory/add",
+                productRequest.code(),
+                productRequest.quantity()
+        );
 
         return new ProductCreateResponse(product.getId(), product.getCode());
     }
 
     @Override
     public void updateProduct(Long id, ProductRequest productRequest) {
-        Product product = productService.findById(id);
-        product = Product.builder()
-                .id(id)
-                .code(productRequest.code())
-                .name(productRequest.name())
-                .description(productRequest.description())
-                .spec(productSpecMapper.apply(productRequest.spec()))
-                .category(productCategoryMapper.apply(productRequest.category()))
-                .price(productRequest.price())
-                .build();
-        productService.updateProduct(product);
+        try {
+            Product existingProduct = productService.findById(id);
 
-        webClientBuilder.build().put()
-                .uri("http://inventory-service/api/inventory/update",
-                        uriBuilder -> uriBuilder
-                                .queryParam("code", productRequest.code())
-                                .queryParam("quantity", productRequest.quantity())
-                                .build())
-                .retrieve()
-                .toBodilessEntity()
-                .block();
+            Product product = Product.builder()
+                    .id(existingProduct.getId())
+                    .code(productRequest.code())
+                    .name(productRequest.name())
+                    .description(productRequest.description())
+                    .spec(productSpecMapper.apply(productRequest.spec()))
+                    .category(productCategoryMapper.apply(productRequest.category()))
+                    .price(productRequest.price())
+                    .build();
 
+            productService.updateProduct(product);
+
+            updateInventory(
+                    webClientBuilder.build().put(),
+                    "http://inventory-service/api/inventory/update",
+                    productRequest.code(),
+                    productRequest.quantity()
+            );
+        } catch (EntityNotFoundException e) {
+            log.error("Product does not exist!");
+        }
     }
 
     @Override
@@ -88,5 +88,17 @@ public class ProductFacadeImpl implements ProductFacade {
     @Override
     public ProductResponse findById(Long id) {
         return productResponseMapper.apply(productService.findById(id));
+    }
+
+    private void updateInventory(WebClient.RequestBodyUriSpec webClientBuilder, String url, String productRequest, Integer productRequest1) {
+        webClientBuilder
+                .uri(url,
+                        uriBuilder -> uriBuilder
+                                .queryParam("code", productRequest)
+                                .queryParam("quantity", productRequest1)
+                                .build())
+                .retrieve()
+                .toBodilessEntity()
+                .block();
     }
 }
