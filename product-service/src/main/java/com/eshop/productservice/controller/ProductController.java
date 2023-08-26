@@ -4,6 +4,7 @@ import com.eshop.productservice.facade.ProductFacade;
 import com.eshop.productservice.models.dto.ProductCreateResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
+import com.eshop.productservice.models.dto.ProductToUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class ProductController {
         return productFacade.createProduct(productRequest);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
-        productFacade.updateProduct(id, productRequest);
+    public void update(@RequestBody ProductToUpdateRequest updateRequest) {
+        productFacade.updateProduct(updateRequest);
     }
 }
