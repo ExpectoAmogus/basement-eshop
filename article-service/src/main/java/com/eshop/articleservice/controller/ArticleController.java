@@ -4,7 +4,6 @@ import com.eshop.articleservice.facade.ArticleFacade;
 import com.eshop.articleservice.models.dto.ArticleRequest;
 import com.eshop.articleservice.models.dto.ArticleResponse;
 import com.eshop.articleservice.models.dto.ArticleToUpdateRequest;
-import com.eshop.articleservice.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

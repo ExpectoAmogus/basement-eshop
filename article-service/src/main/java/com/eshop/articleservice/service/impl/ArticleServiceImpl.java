@@ -1,10 +1,6 @@
 package com.eshop.articleservice.service.impl;
 
-import com.eshop.articleservice.models.dto.ArticleRequest;
-import com.eshop.articleservice.models.dto.ArticleResponse;
-import com.eshop.articleservice.models.dto.ArticleToUpdateRequest;
 import com.eshop.articleservice.models.entity.Article;
-import com.eshop.articleservice.models.mappers.ArticleResponseMapper;
 import com.eshop.articleservice.repository.ArticleRepository;
 import com.eshop.articleservice.service.ArticleService;
 import jakarta.persistence.EntityNotFoundException;
