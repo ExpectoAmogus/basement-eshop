@@ -3,13 +3,14 @@ package com.eshop.articleservice.models.entity;
 import com.eshop.articleservice.models.enums.ArticleType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "articles")
 public class Article extends BaseEntity {
 
