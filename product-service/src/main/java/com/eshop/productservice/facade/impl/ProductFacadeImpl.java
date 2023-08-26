@@ -4,6 +4,7 @@ import com.eshop.productservice.facade.ProductFacade;
 import com.eshop.productservice.models.dto.ProductCreateResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
+import com.eshop.productservice.models.dto.ProductToUpdateRequest;
 import com.eshop.productservice.models.entity.Product;
 import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
@@ -50,18 +51,18 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public void updateProduct(Long id, ProductRequest productRequest) {
+    public void updateProduct(ProductToUpdateRequest updateRequest) {
         try {
-            Product existingProduct = productService.findById(id);
+            Product existingProduct = productService.findById(updateRequest.id());
 
             Product product = Product.builder()
                     .id(existingProduct.getId())
-                    .code(productRequest.code())
-                    .name(productRequest.name())
-                    .description(productRequest.description())
-                    .spec(productSpecMapper.apply(productRequest.spec()))
-                    .category(productCategoryMapper.apply(productRequest.category()))
-                    .price(productRequest.price())
+                    .code(updateRequest.code())
+                    .name(updateRequest.name())
+                    .description(updateRequest.description())
+                    .spec(productSpecMapper.apply(updateRequest.spec()))
+                    .category(productCategoryMapper.apply(updateRequest.category()))
+                    .price(updateRequest.price())
                     .build();
 
             productService.updateProduct(product);
@@ -69,8 +70,8 @@ public class ProductFacadeImpl implements ProductFacade {
             updateInventory(
                     webClientBuilder.build().put(),
                     "http://inventory-service/api/inventory/update",
-                    productRequest.code(),
-                    productRequest.quantity()
+                    updateRequest.code(),
+                    updateRequest.quantity()
             );
         } catch (EntityNotFoundException e) {
             log.error("Product does not exist!");
