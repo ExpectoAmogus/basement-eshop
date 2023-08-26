@@ -18,19 +18,25 @@ public class ProductController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductResponse> get(){
+    public List<ProductResponse> getAll() {
         return productFacade.getProducts();
+    }
+
+    @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductResponse get(@PathVariable Long id) {
+        return productFacade.findById(id);
     }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductCreateResponse create(@RequestBody ProductRequest productRequest){
+    public ProductCreateResponse create(@RequestBody ProductRequest productRequest) {
         return productFacade.createProduct(productRequest);
     }
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable Long id, @RequestBody ProductRequest productRequest){
+    public void update(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
         productFacade.updateProduct(id, productRequest);
     }
 }
