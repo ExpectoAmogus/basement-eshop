@@ -7,6 +7,7 @@ import com.eshop.articleservice.models.entity.Article;
 import com.eshop.articleservice.models.mappers.ArticleResponseMapper;
 import com.eshop.articleservice.repository.ArticleRepository;
 import com.eshop.articleservice.service.ArticleService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,32 +20,30 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final ArticleResponseMapper articleResponseMapper;
+
     @Override
-    public void create(ArticleRequest articleRequest) {
-        Article article = Article.builder()
-                .title(articleRequest.title())
-                .subTitle(articleRequest.subTitle())
-                .text(articleRequest.text())
-                .type(articleRequest.type())
+    public Article create(Article article) {
+        article = Article.builder()
+                .title(article.getTitle())
+                .subTitle(article.getSubTitle())
+                .text(article.getText())
+                .type(article.getType())
                 .build();
 
-        articleRepository.save(article);
-        log.info("Article {} is successfully saved", article.getId());
+        Article newArticle = articleRepository.save(article);
+        log.info("Article {} is successfully saved", newArticle.getId());
+        return newArticle;
+
     }
 
     @Override
-    public void update(ArticleToUpdateRequest updateRequest) {
-        Article articleToUpdate = articleRepository.findById(updateRequest.id()).orElse(null);
-        if (articleToUpdate == null){
-            log.error("Article not found!");
-            return;
-        }
+    public void update(Article articleToUpdate) {
         articleToUpdate = Article.builder()
-                .title(updateRequest.title())
-                .subTitle(updateRequest.subTitle())
-                .text(updateRequest.text())
-                .type(updateRequest.type())
+                .id(articleToUpdate.getId())
+                .title(articleToUpdate.getTitle())
+                .subTitle(articleToUpdate.getSubTitle())
+                .text(articleToUpdate.getText())
+                .type(articleToUpdate.getType())
                 .build();
 
         articleRepository.save(articleToUpdate);
@@ -52,28 +51,19 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void delete(Long id) {
-        Article articleToDelete = articleRepository.findById(id).orElse(null);
-        if (articleToDelete == null){
-            log.error("Article not found!");
-            return;
-        }
-        articleRepository.delete(articleToDelete);
-        log.info("Article {} is successfully deleted", id);
+    public void delete(Article article) {
+        articleRepository.delete(article);
+        log.info("Article {} is successfully deleted", article.getId());
     }
 
     @Override
-    public ArticleResponse findById(Long id) {
+    public Article findById(Long id) {
         return articleRepository.findById(id)
-                .map(articleResponseMapper)
-                .orElse(null); // TODO: поменять
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
-    public List<ArticleResponse> findAll() {
-        return articleRepository.findAll()
-                .stream()
-                .map(articleResponseMapper)
-                .toList();
+    public List<Article> findAll() {
+        return articleRepository.findAll();
     }
 }
