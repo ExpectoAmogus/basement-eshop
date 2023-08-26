@@ -50,45 +50,4 @@ public class Product extends BaseEntity {
 
     @Column(name = "p_price", nullable = false)
     private BigDecimal price;
-
-    public ProductCategoryDto getProductCategoryDto() {
-        return new ProductCategoryDto(
-                category.getId(),
-                category.getName(),
-                category.getParentId()
-        );
-    }
-
-    public ProductSpecDto getProductSpecDto() {
-        if (spec instanceof BodySpec bodySpec) {
-            return BodyDto.builder()
-                    .size(bodySpec.getSize())
-                    .color(bodySpec.getColor())
-                    .sex(bodySpec.getSex())
-                    .sleeve(bodySpec.getSleeve())
-                    .build();
-        } else if (spec instanceof BootsSpec bootsSpec) {
-            return BootsDto.builder()
-                    .size(bootsSpec.getSize())
-                    .color(bootsSpec.getColor())
-                    .sex(bootsSpec.getSex())
-                    .liftingHeight(bootsSpec.getLiftingHeight())
-                    .build();
-        } else if (spec instanceof HeadSpec headSpec) {
-            return HeadDto.builder()
-                    .size(headSpec.getSize())
-                    .color(headSpec.getColor())
-                    .sex(headSpec.getSex())
-                    .headGirth(headSpec.getHeadGirth())
-                    .build();
-        } else if (spec instanceof PantsSpec pantsSpec) {
-            return PantsDto.builder()
-                    .size(pantsSpec.getSize())
-                    .color(pantsSpec.getColor())
-                    .sex(pantsSpec.getSex())
-                    .pantLength(pantsSpec.getPantLength())
-                    .build();
-        }
-        return null;
-    }
 }
