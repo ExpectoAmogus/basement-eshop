@@ -1,5 +1,6 @@
 package com.eshop.productservice.controller;
 
+import com.eshop.productservice.facade.ProductFacade;
 import com.eshop.productservice.models.dto.ProductCreateResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
@@ -15,23 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/product")
 public class ProductController {
-    private final ProductService productService;
+    private final ProductFacade productFacade;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> get(){
-        return productService.getProducts();
+        return productFacade.getProducts();
     }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductCreateResponse create(@RequestBody ProductRequest productRequest){
-        return productService.createProduct(productRequest);
+        return productFacade.createProduct(productRequest);
     }
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable Long id, @RequestBody ProductRequest productRequest){
-        productService.updateProduct(id, productRequest);
+        productFacade.updateProduct(id, productRequest);
     }
 }
