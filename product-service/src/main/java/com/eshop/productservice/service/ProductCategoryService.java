@@ -1,12 +1,13 @@
 package com.eshop.productservice.service;
 
 import com.eshop.productservice.models.dto.ProductCategoryDto;
+import com.eshop.productservice.models.entity.ProductCategory;
 
 import java.util.List;
 
 public interface ProductCategoryService {
-    ProductCategoryDto createCategory(ProductCategoryDto productCategoryDto);
-    List<ProductCategoryDto> getAllCategories();
-    ProductCategoryDto findById(Long id);
-    ProductCategoryDto findByNameAndParentId(String name, Long parentId);
+    ProductCategory createCategory(ProductCategory productCategory);
+    List<ProductCategory> getAllCategories();
+    ProductCategory findById(Long id);
+    ProductCategory findByNameAndParentId(String name, Long parentId);
 }
