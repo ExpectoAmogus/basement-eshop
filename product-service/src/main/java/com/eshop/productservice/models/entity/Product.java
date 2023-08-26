@@ -17,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Getter
 @Setter
