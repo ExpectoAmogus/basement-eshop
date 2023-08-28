@@ -38,7 +38,7 @@ public class ProductFacadeImpl implements ProductFacade {
                 .spec(productSpecMapper.apply(productRequest.spec()))
                 .price(productRequest.price())
                 .build();
-        productService.createProduct(product);
+        Product createdProduct = productService.createProduct(product);
 
         updateInventory(
                 webClientBuilder.build().post(),
@@ -47,7 +47,7 @@ public class ProductFacadeImpl implements ProductFacade {
                 productRequest.quantity()
         );
 
-        return new ProductCreateResponse(product.getId(), product.getCode());
+        return new ProductCreateResponse(createdProduct.getId(), createdProduct.getCode());
     }
 
     @Override
