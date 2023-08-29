@@ -1,15 +1,5 @@
 package com.eshop.productservice.models.entity;
 
-import com.eshop.productservice.models.dto.ProductCategoryDto;
-import com.eshop.productservice.models.dto.ProductSpecDto;
-import com.eshop.productservice.models.dto.specDtos.BodyDto;
-import com.eshop.productservice.models.dto.specDtos.BootsDto;
-import com.eshop.productservice.models.dto.specDtos.HeadDto;
-import com.eshop.productservice.models.dto.specDtos.PantsDto;
-import com.eshop.productservice.models.entity.specsEntitty.BodySpec;
-import com.eshop.productservice.models.entity.specsEntitty.BootsSpec;
-import com.eshop.productservice.models.entity.specsEntitty.HeadSpec;
-import com.eshop.productservice.models.entity.specsEntitty.PantsSpec;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
