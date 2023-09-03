@@ -40,6 +40,7 @@ public class InventoryServiceImpl implements InventoryService {
                 .quantity(quantity)
                 .build();
         inventoryRepository.save(inventory);
+        log.info("Product has been added to stock!");
     }
 
     @Override
@@ -47,6 +48,7 @@ public class InventoryServiceImpl implements InventoryService {
     public void delete(String code) {
         Inventory inventory = inventoryRepository.findByCode(code);
         inventoryRepository.delete(inventory);
+        log.info("Product has been deleted from stock!");
     }
 
     @Override
@@ -59,5 +61,6 @@ public class InventoryServiceImpl implements InventoryService {
                 .quantity(quantity)
                 .build();
         inventoryRepository.save(inventory);
+        log.info("Product has been updated in stock!");
     }
 }

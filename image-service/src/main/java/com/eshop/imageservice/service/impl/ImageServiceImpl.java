@@ -25,14 +25,17 @@ public class ImageServiceImpl implements ImageService {
         List<String> images = s3Service.getImagesByEntityIdAndType(imageRequestDto.entityType(), imageRequestDto.entityId());
 
         if (images.isEmpty() || imageId <= 0 || imageId > images.size()) {
+            log.error("image not found!");
             return ResponseEntity.notFound().build();
         }
 
         String image = images.get(Math.toIntExact(imageId) - 1);
 
         if (image.isEmpty()) {
+            log.warn("Image with id = {} not found!", imageId);
             return ResponseEntity.ok(null);
         } else {
+            log.info("Received an image: {}", image);
             return ResponseEntity.ok(image);
         }
     }

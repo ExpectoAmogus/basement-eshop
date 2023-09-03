@@ -18,12 +18,7 @@ public class JwtGatewayTokenProvider {
     private static final String SECRET_KEY = "2D4B6150645367566B59703373367639792442264528482B4D6251655468576D";
 
     public boolean isTokenValid(String token) {
-        final String username = extractUsername(token);
         return !isTokenExpired(token);
-    }
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

@@ -15,6 +15,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String placeOrder(Order order) {
         orderRepository.save(order);
+        log.info("Order Placed!");
         return "Order Placed!";
     }
 }
