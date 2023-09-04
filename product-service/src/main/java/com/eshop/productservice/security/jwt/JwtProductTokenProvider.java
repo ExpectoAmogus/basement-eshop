@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtProductTokenProvider implements JwtTokenProvider {
-    private static final String SECRET_KEY = "2D4B6150645367566B59703373367639792442264528482B4D6251655468576D";
+    @Value("${secret.key.jwt}")
+    private String SECRET_KEY;
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
