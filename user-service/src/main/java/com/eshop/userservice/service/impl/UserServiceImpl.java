@@ -1,9 +1,7 @@
 package com.eshop.userservice.service.impl;
 
 import com.eshop.userservice.models.BaseUser;
-import com.eshop.userservice.models.Role;
 import com.eshop.userservice.models.User;
-import com.eshop.userservice.repository.RoleRepository;
 import com.eshop.userservice.repository.user.UserRepository;
 import com.eshop.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +22,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void create(User user) {
         log.info("Creating new User {}", user.getEmail());
@@ -75,17 +71,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
-        return (User) userRepository.findByEmail(email)
+    public BaseUser findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User by this email not found"));
     }
 
-    @Override
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Role saveRole(Role role) {
-        log.info("Saving new role {} to the database", role.name());
-        return roleRepository.save(role);
-    }
+//    @Override
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public Role saveRole(Role role) {
+//        log.info("Saving new role {} to the database", role.name());
+//        return roleRepository.save(role);
+//    }
 
     public List<User> findAllByListId(List<Long> ids) {
         return userRepository.findAllById(ids);
