@@ -2,7 +2,7 @@ package com.eshop.userservice.facade.impl;
 
 import com.eshop.userservice.dto.AuthDto;
 import com.eshop.userservice.facade.RegistrationFacade;
-import com.eshop.userservice.models.entity.User;
+import com.eshop.userservice.models.User;
 import com.eshop.userservice.service.UserService;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,13 @@
 package com.eshop.userservice.service.impl;
 
-import com.eshop.userservice.models.entity.User;
+import com.eshop.userservice.models.BaseUser;
+import com.eshop.userservice.models.Role;
+import com.eshop.userservice.models.User;
+import com.eshop.userservice.repository.RoleRepository;
 import com.eshop.userservice.repository.user.UserRepository;
 import com.eshop.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,19 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void create(User user) {
-        if (userRepository.existsByEmail(user.getEmail())){
+        log.info("Creating new User {}", user.getEmail());
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("This user already exist");
         }
         user.setEmail(user.getEmail());
@@ -40,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         String oldUserPassword = user.getPassword();
 
-        if(userRepository.existsByEmail(user.getEmail())){
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("This email already exist");
         } else {
             user.setEmail(user.getEmail());
@@ -50,8 +56,10 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public void delete(Long id) {
+
 
     }
 
@@ -73,7 +81,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Role saveRole(Role role) {
+        log.info("Saving new role {} to the database", role.name());
+        return roleRepository.save(role);
+    }
 
     public List<User> findAllByListId(List<Long> ids) {
         return userRepository.findAllById(ids);
@@ -88,7 +100,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEnable(Long id, boolean enable) {
-        userRepository.updateUserEnabledById(id,enable);
+        userRepository.updateUserEnabledById(id, enable);
         return enable;
     }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public void addRoleToUser(String roleName, String email) {
+//        log.info("Adding new role {} to the user {}", roleName, email);
+//        BaseUser user = userRepository.findByEmail(email).get();
+//        Role role = roleRepository.findByName(roleName);
+//        user.getRoles().add(role);
+//    }
 }

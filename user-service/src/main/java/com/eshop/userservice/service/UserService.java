@@ -1,9 +1,9 @@
 package com.eshop.userservice.service;
 
-import com.eshop.userservice.models.entity.User;
+import com.eshop.userservice.models.Role;
+import com.eshop.userservice.models.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService extends  BaseUserService<User>{
 
@@ -16,4 +16,8 @@ public interface UserService extends  BaseUserService<User>{
     List<User> findAll();
 
     boolean isEnable(Long id, boolean enable); // метод бана
+
+    Role saveRole(Role role);
+
+//    void addRoleToUser(String roleName, String email);
 }

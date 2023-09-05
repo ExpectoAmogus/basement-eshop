@@ -1,6 +1,5 @@
-package com.eshop.userservice.models.entity;
+package com.eshop.userservice.models;
 
-import com.eshop.userservice.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

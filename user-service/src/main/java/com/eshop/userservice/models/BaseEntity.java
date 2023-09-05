@@ -1,4 +1,4 @@
-package com.eshop.userservice.models.entity;
+package com.eshop.userservice.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
