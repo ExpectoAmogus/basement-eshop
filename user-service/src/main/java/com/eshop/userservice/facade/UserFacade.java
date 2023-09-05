@@ -1,14 +1,13 @@
 package com.eshop.userservice.facade;
 
+import com.eshop.userservice.models.BaseUser;
 import com.eshop.userservice.models.Role;
 import com.eshop.userservice.models.User;
 
 import java.util.List;
 
-public interface UserFacade {
+public interface UserFacade extends BaseUserFacade{
     boolean existsByEmail(String email);
-
-    User findByEmail(String email);
 
     List<User> findAllByListId(List<Long> ids);
 
@@ -16,7 +15,7 @@ public interface UserFacade {
 
     boolean isEnable(Long id, boolean enable); // метод бана
 
-    Role saveRole(Role role);
+//    Role saveRole(Role role);
 
 //    void addRoleToUser(String roleName, String email);
 

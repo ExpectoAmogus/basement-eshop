@@ -1,6 +1,7 @@
 package com.eshop.userservice.facade.impl;
 
 import com.eshop.userservice.facade.UserFacade;
+import com.eshop.userservice.models.BaseUser;
 import com.eshop.userservice.models.Role;
 import com.eshop.userservice.models.User;
 import com.eshop.userservice.service.UserService;
@@ -23,7 +24,7 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public BaseUser findByEmail(String email) {
         return userService.findByEmail(email);
     }
 
@@ -42,10 +43,10 @@ public class UserFacadeImpl implements UserFacade {
         return userService.isEnable(id,enable);
     }
 
-    @Override
-    public Role saveRole(Role role) {
-        return userService.saveRole(role);
-    }
+//    @Override
+//    public Role saveRole(Role role) {
+//        return userService.saveRole(role);
+//    }
 
 //    @Override
 //    public void addRoleToUser(String roleName, String email) {

@@ -1,6 +1,6 @@
 package com.eshop.userservice.facade.impl;
 
-import com.eshop.userservice.dto.AuthDto;
+import com.eshop.userservice.dto.UserRegistrationDto;
 import com.eshop.userservice.facade.AuthValidatorFacade;
 import com.eshop.userservice.service.UserService;
 import org.springframework.stereotype.Service;
@@ -18,27 +18,27 @@ public class AuthValidatorFacadeImpl implements AuthValidatorFacade {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return AuthDto.class.equals(clazz);
+        return UserRegistrationDto.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        AuthDto data = (AuthDto) target;
+        UserRegistrationDto data = (UserRegistrationDto) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
-        if (data.getEmail().length() < 6 || data.getEmail().length() > 32) {
+        if (data.email().length() < 6 || data.email().length() > 32) {
             errors.rejectValue("email", "Size.authForm.email");
         }
-        if (userService.existsByEmail(data.getEmail())) {
+        if (userService.existsByEmail(data.email())) {
             errors.rejectValue("email", "Duplicate.authForm.email");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (data.getPassword().length() < 8 || data.getPassword().length() > 32) {
+        if (data.password().length() < 8 || data.password().length() > 32) {
             errors.rejectValue("password", "Size.authForm.password");
         }
 
-        if (!data.getPasswordConfirm().equals(data.getPassword())) {
+        if (!data.passwordConfirm().equals(data.password())) {
             errors.rejectValue("passwordConfirm", "Diff.authForm.passwordConfirm");
         }
     }
