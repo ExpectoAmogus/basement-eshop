@@ -5,6 +5,7 @@ import com.eshop.inventoryservice.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class InventoryController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void create(@RequestParam String code, @RequestParam Integer quantity){
         inventoryService.create(code, quantity);
         log.info("Created entity with code {}", code);
@@ -32,6 +34,7 @@ public class InventoryController {
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void update(@RequestParam String code, @RequestParam Integer quantity){
         inventoryService.update(code, quantity);
         log.info("Updated entity with code {}", code);
@@ -39,6 +42,7 @@ public class InventoryController {
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@RequestParam String code){
         inventoryService.delete(code);
         log.info("Deleted entity with code {}", code);
