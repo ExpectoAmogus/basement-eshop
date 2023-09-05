@@ -7,6 +7,7 @@ import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.models.dto.ProductToUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,12 +32,14 @@ public class ProductController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductCreateResponse create(@RequestBody ProductRequest productRequest) {
         return productFacade.createProduct(productRequest);
     }
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public void update(@RequestBody ProductToUpdateRequest updateRequest) {
         productFacade.updateProduct(updateRequest);
     }
