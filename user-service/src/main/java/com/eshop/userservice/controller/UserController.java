@@ -14,28 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-    UserFacade userFacade;
+    private final UserFacade userFacade;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok().body(userFacade.findAll());
     }
-
-    @GetMapping
-    public String index() {
-        return "pages/user/panel";
-    }
-
-    @PostMapping
-    public String saveRole(Model model){
-
-        return "pages/admin/panel";
-    }
-
-
-    //???????????????????
-
 }
