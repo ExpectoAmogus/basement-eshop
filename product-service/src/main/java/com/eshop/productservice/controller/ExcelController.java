@@ -1,6 +1,7 @@
 package com.eshop.productservice.controller;
 
 import com.eshop.productservice.facade.ExcelFacade;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.util.IOUtils;
@@ -23,9 +24,9 @@ public class ExcelController {
     private final ExcelFacade excelFacade;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         try {
-            excelFacade.processExcelFile(file.getInputStream());
+            excelFacade.processExcelFile(file.getInputStream(), request);
             return ResponseEntity.ok("File uploaded and processed successfully.");
         } catch (Exception e) {
             log.error("Error processing Excel file.", e);

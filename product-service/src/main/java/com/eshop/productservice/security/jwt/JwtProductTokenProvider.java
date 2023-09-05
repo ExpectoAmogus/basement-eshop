@@ -6,26 +6,45 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
-public class JwtProductTokenProvider implements JwtTokenProvider {
+public class JwtProductTokenProvider implements JwtTokenProvider{
     @Value("${secret.key.jwt}")
     private String SECRET_KEY;
+
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    public boolean isTokenValid(String token) {
+        return !isTokenExpired(token);
     }
 
     @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> extractRoles(String token) {
+        final Claims claims = extarctAllClaims(token);
+
+        if (claims.get("role") instanceof Collection<?> roles) {
+            return roles.stream()
+                    .filter(role -> role instanceof Map) // Ensure it's a Map
+                    .map(role -> (Map<?, ?>) role) // Cast to Map
+                    .filter(roleMap -> roleMap.containsKey("authority")) // Ensure it has "authority" key
+                    .map(roleMap -> roleMap.get("authority").toString()) // Extract "authority" value as String
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
+        }
+        return Collections.emptyList();
+
     }
 
     @Override

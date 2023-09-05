@@ -1,6 +1,5 @@
 package com.eshop.productservice.config;
 
-import com.eshop.common.security.jwt.JwtTokenProvider;
 import com.eshop.productservice.security.jwt.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class SecurityConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(a -> a
-                        .requestMatchers("/api/excel/**").hasRole("ADMIN")
+                        .requestMatchers("/api/excel/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/product/**").permitAll()
                         .anyRequest().authenticated()
                 )

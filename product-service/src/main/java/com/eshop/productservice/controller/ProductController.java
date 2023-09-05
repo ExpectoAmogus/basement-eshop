@@ -5,6 +5,7 @@ import com.eshop.productservice.models.dto.ProductCreateResponse;
 import com.eshop.productservice.models.dto.ProductRequest;
 import com.eshop.productservice.models.dto.ProductResponse;
 import com.eshop.productservice.models.dto.ProductToUpdateRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,15 +33,15 @@ public class ProductController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
-    public ProductCreateResponse create(@RequestBody ProductRequest productRequest) {
-        return productFacade.createProduct(productRequest);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ProductCreateResponse create(@RequestBody ProductRequest productRequest, HttpServletRequest request) {
+        return productFacade.createProduct(productRequest, request);
     }
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN')")
-    public void update(@RequestBody ProductToUpdateRequest updateRequest) {
-        productFacade.updateProduct(updateRequest);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void update(@RequestBody ProductToUpdateRequest updateRequest, HttpServletRequest request) {
+        productFacade.updateProduct(updateRequest, request);
     }
 }

@@ -10,6 +10,7 @@ import com.eshop.productservice.models.dto.specDtos.BootsDto;
 import com.eshop.productservice.models.dto.specDtos.HeadDto;
 import com.eshop.productservice.models.dto.specDtos.PantsDto;
 import com.eshop.productservice.service.ExcelService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -26,7 +27,7 @@ public class ExcelFacadeImpl implements ExcelFacade {
     private final ProductFacade productFacade;
     private final ExcelService excelService;
     @Override
-    public void processExcelFile(InputStream excelFileStream) {
+    public void processExcelFile(InputStream excelFileStream, HttpServletRequest request) {
         try (Workbook workbook = WorkbookFactory.create(excelFileStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
@@ -39,7 +40,7 @@ public class ExcelFacadeImpl implements ExcelFacade {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 ProductRequest productRequest = createProductRequestFromRow(row);
-                productFacade.createProduct(productRequest);
+                productFacade.createProduct(productRequest, request);
             }
         } catch (Exception e) {
             log.error("Error processing Excel file.", e);

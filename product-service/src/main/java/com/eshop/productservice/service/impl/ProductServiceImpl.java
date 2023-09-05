@@ -40,9 +40,9 @@ public class ProductServiceImpl implements ProductService {
                 .category(category)
                 .price(product.getPrice())
                 .build();
-
-        log.info("Product {} is created", product.getId());
-        return productRepository.save(product);
+        Product newProduct = productRepository.save(product);
+        log.info("Product {} is created", newProduct.getId());
+        return newProduct;
     }
 
     @Override

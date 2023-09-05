@@ -11,8 +11,10 @@ import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.models.mappers.ProductSpecMapper;
 import com.eshop.productservice.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -29,7 +31,7 @@ public class ProductFacadeImpl implements ProductFacade {
     private final WebClient.Builder webClientBuilder;
 
     @Override
-    public ProductCreateResponse createProduct(ProductRequest productRequest) {
+    public ProductCreateResponse createProduct(ProductRequest productRequest, HttpServletRequest request) {
         Product product = Product.builder()
                 .name(productRequest.name())
                 .code(productRequest.code())
@@ -44,14 +46,15 @@ public class ProductFacadeImpl implements ProductFacade {
                 webClientBuilder.build().post(),
                 "http://inventory-service/api/inventory/add",
                 productRequest.code(),
-                productRequest.quantity()
+                productRequest.quantity(),
+                getToken(request)
         );
 
         return new ProductCreateResponse(createdProduct.getId(), createdProduct.getCode());
     }
 
     @Override
-    public void updateProduct(ProductToUpdateRequest updateRequest) {
+    public void updateProduct(ProductToUpdateRequest updateRequest, HttpServletRequest request) {
         try {
             Product existingProduct = productService.findById(updateRequest.id());
 
@@ -71,7 +74,8 @@ public class ProductFacadeImpl implements ProductFacade {
                     webClientBuilder.build().put(),
                     "http://inventory-service/api/inventory/update",
                     updateRequest.code(),
-                    updateRequest.quantity()
+                    updateRequest.quantity(),
+                    getToken(request)
             );
         } catch (EntityNotFoundException e) {
             log.error("Product does not exist!");
@@ -91,15 +95,20 @@ public class ProductFacadeImpl implements ProductFacade {
         return productResponseMapper.apply(productService.findById(id));
     }
 
-    private void updateInventory(WebClient.RequestBodyUriSpec webClientBuilder, String url, String productRequest, Integer productRequest1) {
+    private void updateInventory(WebClient.RequestBodyUriSpec webClientBuilder, String url, String productRequest, Integer productRequest1, String token) {
         webClientBuilder
                 .uri(url,
                         uriBuilder -> uriBuilder
                                 .queryParam("code", productRequest)
                                 .queryParam("quantity", productRequest1)
                                 .build())
+                .header(HttpHeaders.AUTHORIZATION, token)
                 .retrieve()
                 .toBodilessEntity()
                 .block();
+    }
+
+    private String getToken(HttpServletRequest request){
+        return request.getHeader(HttpHeaders.AUTHORIZATION);
     }
 }
