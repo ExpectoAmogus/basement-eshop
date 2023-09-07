@@ -11,10 +11,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class ProductFacadeImpl implements ProductFacade {
                 .build();
         Product createdProduct = productService.createProduct(product);
 
-        kafkaTemplate.send("inventory-topic", new InventoryRequest(
+        kafkaTemplate.send("product-topic", new InventoryRequest(
                 productRequest.code(),
                 productRequest.quantity()
         ));
@@ -65,7 +63,7 @@ public class ProductFacadeImpl implements ProductFacade {
 
             productService.updateProduct(product);
 
-            kafkaTemplate.send("inventory-topic", new InventoryRequest(
+            kafkaTemplate.send("product-topic", new InventoryRequest(
                     updateRequest.code(),
                     updateRequest.quantity()
             ));
