@@ -1,10 +1,7 @@
 package com.eshop.productservice.facade.impl;
 
 import com.eshop.productservice.facade.ProductFacade;
-import com.eshop.productservice.models.dto.ProductCreateResponse;
-import com.eshop.productservice.models.dto.ProductRequest;
-import com.eshop.productservice.models.dto.ProductResponse;
-import com.eshop.productservice.models.dto.ProductToUpdateRequest;
+import com.eshop.productservice.models.dto.*;
 import com.eshop.productservice.models.entity.Product;
 import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
@@ -15,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -29,6 +27,7 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ProductSpecMapper productSpecMapper;
     private final ProductCategoryMapper productCategoryMapper;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, InventoryRequest> kafkaTemplate;
 
     @Override
     public ProductCreateResponse createProduct(ProductRequest productRequest, HttpServletRequest request) {
@@ -42,13 +41,17 @@ public class ProductFacadeImpl implements ProductFacade {
                 .build();
         Product createdProduct = productService.createProduct(product);
 
-        updateInventory(
-                webClientBuilder.build().post(),
-                "http://inventory-service/api/inventory/add",
+        kafkaTemplate.send("inventory-topic", new InventoryRequest(
                 productRequest.code(),
-                productRequest.quantity(),
-                getToken(request)
-        );
+                productRequest.quantity()
+        ));
+//        updateInventory(
+//                webClientBuilder.build().post(),
+//                "http://inventory-service/api/inventory/add",
+//                productRequest.code(),
+//                productRequest.quantity(),
+//                getToken(request)
+//        );
 
         return new ProductCreateResponse(createdProduct.getId(), createdProduct.getCode());
     }
@@ -70,13 +73,18 @@ public class ProductFacadeImpl implements ProductFacade {
 
             productService.updateProduct(product);
 
-            updateInventory(
-                    webClientBuilder.build().put(),
-                    "http://inventory-service/api/inventory/update",
+            kafkaTemplate.send("inventory-topic", new InventoryRequest(
                     updateRequest.code(),
-                    updateRequest.quantity(),
-                    getToken(request)
-            );
+                    updateRequest.quantity()
+            ));
+//            updateInventory(
+//                    webClientBuilder.build().put(),
+//                    "http://inventory-service/api/inventory/update",
+//                    updateRequest.code(),
+//                    updateRequest.quantity(),
+//                    getToken(request)
+//            );
+
         } catch (EntityNotFoundException e) {
             log.error("Product does not exist!");
         }
