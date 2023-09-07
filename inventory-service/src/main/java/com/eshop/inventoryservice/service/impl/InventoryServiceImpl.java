@@ -4,13 +4,11 @@ import com.eshop.inventoryservice.models.dto.InventoryResponse;
 import com.eshop.inventoryservice.models.entity.Inventory;
 import com.eshop.inventoryservice.repository.InventoryRepository;
 import com.eshop.inventoryservice.service.InventoryService;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

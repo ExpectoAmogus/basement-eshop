@@ -2,7 +2,6 @@ package com.eshop.userservice.facade.impl;
 
 import com.eshop.userservice.facade.UserFacade;
 import com.eshop.userservice.models.BaseUser;
-import com.eshop.userservice.models.Role;
 import com.eshop.userservice.models.User;
 import com.eshop.userservice.service.UserService;
 import org.springframework.stereotype.Service;

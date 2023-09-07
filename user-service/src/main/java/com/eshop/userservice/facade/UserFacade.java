@@ -1,7 +1,5 @@
 package com.eshop.userservice.facade;
 
-import com.eshop.userservice.models.BaseUser;
-import com.eshop.userservice.models.Role;
 import com.eshop.userservice.models.User;
 
 import java.util.List;

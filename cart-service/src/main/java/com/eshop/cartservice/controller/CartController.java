@@ -2,8 +2,6 @@ package com.eshop.cartservice.controller;
 
 import com.eshop.cartservice.facade.CartFacade;
 import com.eshop.cartservice.models.dto.CartDto;
-import com.eshop.cartservice.models.entity.Cart;
-import com.eshop.cartservice.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

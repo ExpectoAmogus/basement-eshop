@@ -2,10 +2,8 @@ package com.eshop.common.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Function;
 
 public interface JwtTokenProvider {

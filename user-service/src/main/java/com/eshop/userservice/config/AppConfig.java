@@ -2,7 +2,6 @@ package com.eshop.userservice.config;
 
 import com.eshop.userservice.models.BaseUser;
 import com.eshop.userservice.repository.user.BaseUserRepository;
-import com.eshop.userservice.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
