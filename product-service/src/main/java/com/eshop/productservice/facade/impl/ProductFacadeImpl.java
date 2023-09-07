@@ -26,7 +26,6 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ProductResponseMapper productResponseMapper;
     private final ProductSpecMapper productSpecMapper;
     private final ProductCategoryMapper productCategoryMapper;
-    private final WebClient.Builder webClientBuilder;
     private final KafkaTemplate<String, InventoryRequest> kafkaTemplate;
 
     @Override
@@ -45,13 +44,6 @@ public class ProductFacadeImpl implements ProductFacade {
                 productRequest.code(),
                 productRequest.quantity()
         ));
-//        updateInventory(
-//                webClientBuilder.build().post(),
-//                "http://inventory-service/api/inventory/add",
-//                productRequest.code(),
-//                productRequest.quantity(),
-//                getToken(request)
-//        );
 
         return new ProductCreateResponse(createdProduct.getId(), createdProduct.getCode());
     }
@@ -77,13 +69,6 @@ public class ProductFacadeImpl implements ProductFacade {
                     updateRequest.code(),
                     updateRequest.quantity()
             ));
-//            updateInventory(
-//                    webClientBuilder.build().put(),
-//                    "http://inventory-service/api/inventory/update",
-//                    updateRequest.code(),
-//                    updateRequest.quantity(),
-//                    getToken(request)
-//            );
 
         } catch (EntityNotFoundException e) {
             log.error("Product does not exist!");
@@ -101,22 +86,5 @@ public class ProductFacadeImpl implements ProductFacade {
     @Override
     public ProductResponse findById(Long id) {
         return productResponseMapper.apply(productService.findById(id));
-    }
-
-    private void updateInventory(WebClient.RequestBodyUriSpec webClientBuilder, String url, String productRequest, Integer productRequest1, String token) {
-        webClientBuilder
-                .uri(url,
-                        uriBuilder -> uriBuilder
-                                .queryParam("code", productRequest)
-                                .queryParam("quantity", productRequest1)
-                                .build())
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .retrieve()
-                .toBodilessEntity()
-                .block();
-    }
-
-    private String getToken(HttpServletRequest request){
-        return request.getHeader(HttpHeaders.AUTHORIZATION);
     }
 }
