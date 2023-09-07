@@ -1,6 +1,5 @@
 package com.eshop.productservice.config;
 
-import com.eshop.productservice.models.dto.InventoryRequest;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,13 +28,13 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, ?> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate(
-            ProducerFactory<String, Object> producerFactory
+    public KafkaTemplate<String, ?> kafkaTemplate(
+            ProducerFactory<String, ?> producerFactory
     ) {
         return new KafkaTemplate<>(producerFactory);
     }
