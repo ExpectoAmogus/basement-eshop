@@ -13,7 +13,9 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -35,23 +37,29 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
 
         //Deserializer props
-        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.eshop.inventoryservice.models.dto.InventoryRequest");
-        props.put(JsonDeserializer.TYPE_MAPPINGS, "com.eshop.productservice.models.dto.InventoryRequest:com.eshop.inventoryservice.models.dto.InventoryRequest");
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.eshop.productservice");
+        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE,
+                "com.eshop.inventoryservice.models.dto.InventoryRequest"
+        );
+        props.put(JsonDeserializer.TYPE_MAPPINGS,
+                "com.eshop.productservice.models.dto.InventoryRequest:com.eshop.inventoryservice.models.dto.InventoryRequest"
+        );
+        props.put(JsonDeserializer.TRUSTED_PACKAGES,
+                "com.eshop.productservice"
+        );
 
         return props;
     }
 
     @Bean
     public KafkaListenerContainerFactory<?> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, InventoryRequest> factory =
+        ConcurrentKafkaListenerContainerFactory<String, ?> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, InventoryRequest> consumerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
     }
 }
