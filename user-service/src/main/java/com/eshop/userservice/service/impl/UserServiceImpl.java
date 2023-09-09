@@ -1,8 +1,8 @@
 package com.eshop.userservice.service.impl;
 
 import com.eshop.userservice.models.BaseUser;
-import com.eshop.userservice.models.User;
 import com.eshop.userservice.repository.user.UserRepository;
+import com.eshop.userservice.service.CustomUserDetails;
 import com.eshop.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -26,19 +27,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    public void create(User user) {
+    public void create(CustomUserDetails user) {
         log.info("Creating new User {}", user.getEmail());
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("This user already exist");
         }
-        user.setEmail(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.save((BaseUser) user);
 
     }
 
     @Override
-    public void update(User user) {
+    public void update(CustomUserDetails user) {
 
         String oldUserPassword = user.getPassword();
 
@@ -56,11 +56,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
 
-
     }
 
     @Override
-    public User findById(Long id) {
+    public CustomUserDetails findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
@@ -71,27 +70,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseUser findByEmail(String email) {
+    public CustomUserDetails findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User by this email not found"));
     }
 
-//    @Override
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public Role saveRole(Role role) {
-//        log.info("Saving new role {} to the database", role.name());
-//        return roleRepository.save(role);
-//    }
-
-    public List<User> findAllByListId(List<Long> ids) {
-        return userRepository.findAllById(ids);
+    public List<CustomUserDetails> findAllByListId(List<Long> ids) {
+        return Collections.singletonList((BaseUser) userRepository.findAllById(ids));
     }
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<CustomUserDetails> findAll() {
+        return Collections.singletonList((BaseUser) userRepository.findAll());
     }
 
     @Override
@@ -99,12 +91,4 @@ public class UserServiceImpl implements UserService {
         userRepository.updateUserEnabledById(id, enable);
         return enable;
     }
-
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public void addRoleToUser(String roleName, String email) {
-//        log.info("Adding new role {} to the user {}", roleName, email);
-//        BaseUser user = userRepository.findByEmail(email).get();
-//        Role role = roleRepository.findByName(roleName);
-//        user.getRoles().add(role);
-//    }
 }

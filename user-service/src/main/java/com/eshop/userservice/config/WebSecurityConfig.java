@@ -28,7 +28,7 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) //TODO: enable this shit
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/home","/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/home", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/user/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/api/auth/registration", "/api/auth/login").permitAll()

@@ -5,9 +5,7 @@ import com.eshop.userservice.dto.ResponseDto;
 import com.eshop.userservice.dto.UserLoginDto;
 import com.eshop.userservice.dto.UserRegistrationDto;
 import com.eshop.userservice.facade.RegistrationFacade;
-import com.eshop.userservice.models.BaseUser;
 import com.eshop.userservice.models.User;
-import com.eshop.userservice.service.BaseUserService;
 import com.eshop.userservice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +24,6 @@ import org.springframework.stereotype.Service;
 public class RegistrationFacadeImpl implements RegistrationFacade {
 
     private final UserService userService;
-    private final BaseUserService<BaseUser> baseUserService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
@@ -45,7 +42,7 @@ public class RegistrationFacadeImpl implements RegistrationFacade {
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
         log.info("Auth User with email: {}", request.email());
-        var user = baseUserService.findByEmail(request.email());
+        var user = userService.findByEmail(request.email());
         var jwtToken = jwtService.generateToken(user);
         return new ResponseDto(jwtToken);
     }

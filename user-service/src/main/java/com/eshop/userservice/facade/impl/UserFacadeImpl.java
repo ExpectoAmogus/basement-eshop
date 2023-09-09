@@ -1,8 +1,7 @@
 package com.eshop.userservice.facade.impl;
 
 import com.eshop.userservice.facade.UserFacade;
-import com.eshop.userservice.models.BaseUser;
-import com.eshop.userservice.models.User;
+import com.eshop.userservice.service.CustomUserDetails;
 import com.eshop.userservice.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -23,37 +22,27 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public BaseUser findByEmail(String email) {
+    public CustomUserDetails findByEmail(String email) {
         return userService.findByEmail(email);
     }
 
     @Override
-    public List<User> findAllByListId(List<Long> ids) {
+    public List<CustomUserDetails> findAllByListId(List<Long> ids) {
         return userService.findAllByListId(ids);
     }
 
     @Override
-    public List<User> findAll() {
+    public List<CustomUserDetails> findAll() {
         return userService.findAll();
     }
 
     @Override
     public boolean isEnable(Long id, boolean enable) {
-        return userService.isEnable(id,enable);
+        return userService.isEnable(id, enable);
     }
-
-//    @Override
-//    public Role saveRole(Role role) {
-//        return userService.saveRole(role);
-//    }
-
-//    @Override
-//    public void addRoleToUser(String roleName, String email) {
-//        userService.addRoleToUser(roleName,email);
-//    }
 
     @Override
     public boolean setEnabled(Long id, boolean enable) {
-        return userService.isEnable(id,enable);
+        return userService.isEnable(id, enable);
     }
 }

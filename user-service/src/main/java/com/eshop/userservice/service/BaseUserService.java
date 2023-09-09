@@ -1,7 +1,5 @@
 package com.eshop.userservice.service;
 
-import com.eshop.userservice.models.BaseUser;
-
-public interface BaseUserService<U extends BaseUser> extends CrudService<U> {
-    BaseUser findByEmail(String email);
+public interface BaseUserService<U extends CustomUserDetails> extends CrudService<U> {
+    CustomUserDetails findByEmail(String email);
 }

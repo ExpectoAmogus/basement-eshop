@@ -1,7 +1,7 @@
 package com.eshop.userservice.facade;
 
-import com.eshop.userservice.models.BaseUser;
+import com.eshop.userservice.service.CustomUserDetails;
 
 public interface BaseUserFacade {
-    BaseUser findByEmail(String email);
+    CustomUserDetails findByEmail(String email);
 }

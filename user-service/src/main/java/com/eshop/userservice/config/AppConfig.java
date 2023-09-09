@@ -1,7 +1,6 @@
 package com.eshop.userservice.config;
 
-import com.eshop.userservice.models.BaseUser;
-import com.eshop.userservice.repository.user.BaseUserRepository;
+import com.eshop.userservice.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class AppConfig {
 
-    private final BaseUserRepository<BaseUser> userRepository;
+    private final UserRepository userRepository;
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username).orElseThrow(() ->
                 new UsernameNotFoundException("User does not exists"));
     }
@@ -32,7 +31,7 @@ public class AppConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());

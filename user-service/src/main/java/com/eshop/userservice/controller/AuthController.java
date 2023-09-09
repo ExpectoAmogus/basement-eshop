@@ -19,13 +19,13 @@ public class AuthController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registration(@RequestBody UserRegistrationDto request){
+    public void registration(@RequestBody UserRegistrationDto request) {
         registrationFacade.registration(request);
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto login(@RequestBody UserLoginDto request){
+    public ResponseDto login(@RequestBody UserLoginDto request) {
         return registrationFacade.login(request);
     }
 
