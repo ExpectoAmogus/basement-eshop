@@ -33,14 +33,14 @@ public class ProductController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('write','full')")
     public ProductCreateResponse create(@RequestBody ProductRequest productRequest, HttpServletRequest request) {
         return productFacade.createProduct(productRequest, request);
     }
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('write','full')")
     public void update(@RequestBody ProductToUpdateRequest updateRequest, HttpServletRequest request) {
         productFacade.updateProduct(updateRequest, request);
     }
