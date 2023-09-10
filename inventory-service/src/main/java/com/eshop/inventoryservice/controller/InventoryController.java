@@ -26,7 +26,7 @@ public class InventoryController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('write','full')")
     public void create(@RequestParam String code, @RequestParam Integer quantity){
         inventoryService.create(code, quantity);
         log.info("Created entity with code {}", code);
@@ -34,7 +34,7 @@ public class InventoryController {
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('write','full')")
     public void update(@RequestParam String code, @RequestParam Integer quantity){
         inventoryService.update(code, quantity);
         log.info("Updated entity with code {}", code);
@@ -42,7 +42,7 @@ public class InventoryController {
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('write','full')")
     public void delete(@RequestParam String code){
         inventoryService.delete(code);
         log.info("Deleted entity with code {}", code);
