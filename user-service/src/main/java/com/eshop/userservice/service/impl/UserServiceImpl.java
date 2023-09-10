@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public void delete(Long id) {
 
@@ -76,14 +75,17 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<CustomUserDetails> findAllByListId(List<Long> ids) {
-        return Collections.singletonList((BaseUser) userRepository.findAllById(ids));
+        return userRepository.findAllById(ids).stream()
+                .map(user -> (CustomUserDetails) user)
+                .toList();
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(readOnly = true)
     public List<CustomUserDetails> findAll() {
-        return Collections.singletonList((BaseUser) userRepository.findAll());
+        return userRepository.findAll().stream()
+                .map(user -> (CustomUserDetails) user)
+                .toList();
     }
 
     @Override
