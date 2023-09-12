@@ -27,7 +27,7 @@ public class ProductController {
 
     @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductResponse get(@PathVariable Long id) {
+    public ProductResponse get(@PathVariable String id) {
         return productFacade.findById(id);
     }
 
