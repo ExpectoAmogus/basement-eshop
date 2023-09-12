@@ -15,4 +15,6 @@ import lombok.experimental.SuperBuilder;
 public class BootsDto extends ProductSpecDto {
 
     private Long liftingHeight;
+    private String soleType;
+    private String clasp;
 }

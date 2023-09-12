@@ -3,7 +3,7 @@ package com.eshop.productservice.models.dto;
 import java.math.BigDecimal;
 
 public record ProductToUpdateRequest(
-        Long id,
+        String id,
         String name,
         String code,
         String description,

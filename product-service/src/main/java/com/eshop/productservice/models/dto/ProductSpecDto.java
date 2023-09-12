@@ -27,7 +27,10 @@ import lombok.experimental.SuperBuilder;
 })
 @JsonTypeName("ProductSpecDto")
 public abstract class ProductSpecDto {
-        String size;
-        String color;
-        String sex;
+    String size;
+    String color;
+    String sex;
+    String material;
+    String season;
+    String style;
 }
