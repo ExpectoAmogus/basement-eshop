@@ -7,7 +7,6 @@ import com.eshop.productservice.models.mappers.ProductCategoryMapper;
 import com.eshop.productservice.models.mappers.ProductResponseMapper;
 import com.eshop.productservice.models.mappers.ProductSpecMapper;
 import com.eshop.productservice.service.ProductService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +67,7 @@ public class ProductFacadeImpl implements ProductFacade {
                     updateRequest.quantity()
             ));
 
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
             log.error("Product does not exist!");
         }
     }
@@ -82,7 +81,7 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public ProductResponse findById(Long id) {
+    public ProductResponse findById(String id) {
         return productResponseMapper.apply(productService.findById(id));
     }
 }

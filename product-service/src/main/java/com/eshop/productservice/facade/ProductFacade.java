@@ -12,5 +12,5 @@ public interface ProductFacade {
     ProductCreateResponse createProduct(ProductRequest productRequest, HttpServletRequest request);
     void updateProduct(ProductToUpdateRequest updateRequest, HttpServletRequest request);
     List<ProductResponse> getProducts();
-    ProductResponse findById(Long id);
+    ProductResponse findById(String id);
 }
