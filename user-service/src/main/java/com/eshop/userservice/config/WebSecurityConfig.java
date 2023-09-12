@@ -23,6 +23,7 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -42,10 +43,8 @@ public class WebSecurityConfig {
                         .logoutUrl("/api/auth/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .permitAll())
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> response
-                                .sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")));
+                        .permitAll()
+                );
 
         return http.build();
     }
