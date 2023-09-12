@@ -1,43 +1,38 @@
 package com.eshop.productservice.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-@Table(name = "products")
+@Document(collection = "products")
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends BaseEntity {
+public class Product {
 
-    @Column(name = "p_code", unique = true, nullable = false)
+    @Id
+    private String id;
+
     private String code;
-
-    @Column(name = "p_name", nullable = false)
     private String name;
-
-    @Column(name = "p_desc", columnDefinition = "text")
     private String description;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn
-    @JsonBackReference
     private ProductSpec spec;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
     private ProductCategory category;
-
-    @Column(name = "p_price", nullable = false)
     private BigDecimal price;
+
+    @CreatedDate
+    private LocalDateTime dateOfCreated;
+    @LastModifiedDate
+    private LocalDateTime dateOfUpdated;
 }
