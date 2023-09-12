@@ -5,8 +5,6 @@ import com.eshop.productservice.models.entity.ProductCategory;
 import com.eshop.productservice.repositories.ProductRepository;
 import com.eshop.productservice.service.ProductCategoryService;
 import com.eshop.productservice.service.ProductService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import java.util.List;
 
 @Service
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
@@ -67,9 +64,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(Long id) {
+    public Product findById(String id) {
         return productRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Product does not exist!"));
+                        .orElseThrow();
     }
 
     private boolean categoryExists(Product product) {

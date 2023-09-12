@@ -7,6 +7,6 @@ import java.util.List;
 public interface ProductCategoryService {
     ProductCategory createCategory(ProductCategory productCategory);
     List<ProductCategory> getAllCategories();
-    ProductCategory findById(Long id);
-    ProductCategory findByNameAndParentId(String name, Long parentId);
+    ProductCategory findById(String id);
+    ProductCategory findByNameAndParentId(String name, String parentId);
 }
