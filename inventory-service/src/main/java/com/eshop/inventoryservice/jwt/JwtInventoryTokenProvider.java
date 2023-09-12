@@ -1,6 +1,5 @@
 package com.eshop.inventoryservice.jwt;
 
-import com.eshop.common.security.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -18,21 +17,18 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtInventoryTokenProvider implements JwtTokenProvider{
+public class JwtInventoryTokenProvider {
     @Value("${secret.key.jwt}")
     private String SECRET_KEY;
 
-    @Override
     public boolean isTokenValid(String token) {
         return !isTokenExpired(token);
     }
 
-    @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> extractRoles(String token) {
         final Claims claims = extarctAllClaims(token);
 
@@ -49,7 +45,6 @@ public class JwtInventoryTokenProvider implements JwtTokenProvider{
 
     }
 
-    @Override
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extarctAllClaims(token);
         return claimsResolver.apply(claims);
