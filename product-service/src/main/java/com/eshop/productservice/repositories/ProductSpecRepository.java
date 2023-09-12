@@ -1,7 +1,7 @@
 package com.eshop.productservice.repositories;
 
 import com.eshop.productservice.models.entity.ProductSpec;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ProductSpecRepository extends JpaRepository<ProductSpec, Long> {
+public interface ProductSpecRepository extends MongoRepository<ProductSpec, String> {
 }

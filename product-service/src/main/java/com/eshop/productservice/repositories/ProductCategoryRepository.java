@@ -1,10 +1,10 @@
 package com.eshop.productservice.repositories;
 
 import com.eshop.productservice.models.entity.ProductCategory;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
-    Optional<ProductCategory> findByNameAndParentId(String name, Long parentId);
+public interface ProductCategoryRepository extends MongoRepository<ProductCategory, String> {
+    Optional<ProductCategory> findByNameAndParentId(String name, String parentId);
 }
