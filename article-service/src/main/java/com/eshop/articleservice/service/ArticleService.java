@@ -1,14 +1,14 @@
 package com.eshop.articleservice.service;
 
 
-import com.eshop.articleservice.models.entity.Article;
+import com.eshop.articleservice.models.entity.BaseArticle;
 
 import java.util.List;
 
 public interface ArticleService {
-    Article create(Article article);
-    void update(Article articleToUpdate);
-    void delete(Article article);
-    Article findById(Long id);
-    List<Article> findAll();
+    BaseArticle create(BaseArticle article);
+    void update(BaseArticle articleToUpdate);
+    void delete(BaseArticle article);
+    BaseArticle findById(Long id);
+    List<BaseArticle> findAll();
 }
