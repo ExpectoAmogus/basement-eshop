@@ -1,4 +1,4 @@
-package com.eshop.productservice.config;
+package com.eshop.productservice.config.kafka.topic;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.eshop.productservice.config;
+package com.eshop.productservice.config.kafka.producer;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

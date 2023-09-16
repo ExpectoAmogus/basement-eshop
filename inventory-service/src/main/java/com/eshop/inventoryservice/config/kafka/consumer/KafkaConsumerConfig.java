@@ -1,4 +1,4 @@
-package com.eshop.inventoryservice.config;
+package com.eshop.inventoryservice.config.kafka.consumer;
 
 import com.eshop.inventoryservice.models.dto.InventoryRequest;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
