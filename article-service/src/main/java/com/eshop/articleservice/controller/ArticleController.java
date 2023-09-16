@@ -1,6 +1,7 @@
 package com.eshop.articleservice.controller;
 
 import com.eshop.articleservice.facade.ArticleFacade;
+import com.eshop.articleservice.models.dto.ArticleCreateResponse;
 import com.eshop.articleservice.models.dto.ArticleRequest;
 import com.eshop.articleservice.models.dto.ArticleResponse;
 import com.eshop.articleservice.models.dto.ArticleToUpdateRequest;
@@ -18,9 +19,8 @@ public class ArticleController {
     private final ArticleFacade articleFacade;
 
     @PostMapping("/add")
-    public ResponseEntity<String> createArticle(@RequestBody ArticleRequest articleRequest){
-        articleFacade.create(articleRequest);
-        return new ResponseEntity<>("Article created!", HttpStatus.CREATED);
+    public ResponseEntity<ArticleCreateResponse> createArticle(@RequestBody ArticleRequest articleRequest){
+        return new ResponseEntity<>(articleFacade.create(articleRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
