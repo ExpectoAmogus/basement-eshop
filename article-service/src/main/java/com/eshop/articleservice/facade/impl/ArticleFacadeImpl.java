@@ -40,8 +40,8 @@ public class ArticleFacadeImpl implements ArticleFacade {
         try {
             BaseArticle existingArticle = articleService.findById(articleToUpdate.id());
             for (ArticleFactory factory : articleFactories) {
-                if (articleToUpdate.type().equals(String.valueOf(factory.getArticleType()))) {
-                    articleService.update(factory.updateArticle(articleToUpdate, existingArticle.getId()));
+                if (existingArticle.getType().equals(factory.getArticleType())) {
+                    articleService.update(factory.updateArticle(articleToUpdate, existingArticle));
                 }
             }
         } catch (EntityNotFoundException e) {
