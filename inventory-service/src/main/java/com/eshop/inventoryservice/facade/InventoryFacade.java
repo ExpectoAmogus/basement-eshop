@@ -8,6 +8,6 @@ import java.util.List;
 public interface InventoryFacade {
     List<InventoryResponse> isInStock(List<String> code);
     void create(InventoryRequest request);
-    void delete(String code);
+    void delete(InventoryRequest request);
     void update(InventoryRequest request);
 }
