@@ -49,18 +49,14 @@ public class ProductFacadeImpl implements ProductFacade {
     public void updateProduct(ProductToUpdateRequest updateRequest, HttpServletRequest request) {
         try {
             Product existingProduct = productService.findById(updateRequest.id());
+            existingProduct.setCode(updateRequest.code());
+            existingProduct.setName(updateRequest.name());
+            existingProduct.setDescription(updateRequest.description());
+            existingProduct.setSpec(productSpecMapper.apply(updateRequest.spec()));
+            existingProduct.setCategory(productCategoryMapper.apply(updateRequest.category()));
+            existingProduct.setPrice(updateRequest.price());
 
-            Product product = Product.builder()
-                    .id(existingProduct.getId())
-                    .code(updateRequest.code())
-                    .name(updateRequest.name())
-                    .description(updateRequest.description())
-                    .spec(productSpecMapper.apply(updateRequest.spec()))
-                    .category(productCategoryMapper.apply(updateRequest.category()))
-                    .price(updateRequest.price())
-                    .build();
-
-            productService.updateProduct(product);
+            productService.updateProduct(existingProduct);
 
             kafkaTemplate.send("product-topic", new InventoryRequest(
                     updateRequest.code(),

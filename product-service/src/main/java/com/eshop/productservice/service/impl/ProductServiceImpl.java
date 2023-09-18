@@ -44,15 +44,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(Product product) {
-        product = Product.builder()
-                .id(product.getId())
-                .code(product.getCode())
-                .name(product.getName())
-                .description(product.getDescription())
-                .spec(product.getSpec())
-                .category(product.getCategory())
-                .price(product.getPrice())
-                .build();
         productRepository.save(product);
 
         log.info("Product {} is updated", product.getId());
