@@ -41,10 +41,10 @@ public class KafkaConsumerConfig {
                 "com.eshop.inventoryservice.models.dto.InventoryRequest"
         );
         props.put(JsonDeserializer.TYPE_MAPPINGS,
-                "com.eshop.productservice.models.dto.InventoryRequest:com.eshop.inventoryservice.models.dto.InventoryRequest"
+                "com.eshop.productcommandservice.models.dto.InventoryRequest:com.eshop.inventoryservice.models.dto.InventoryRequest"
         );
         props.put(JsonDeserializer.TRUSTED_PACKAGES,
-                "com.eshop.productservice"
+                "com.eshop.productcommandservice"
         );
 
         return props;
