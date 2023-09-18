@@ -12,9 +12,13 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter){
         return builder.routes()
-                .route("product-service", r -> r.path("/api/product/**", "/api/excel/**")
+                .route("product-query-service", r -> r.path("/api/product/**", "/api/excel/**")
                         .filters(f -> f.filter(jwtFilter))
-                        .uri("lb://product-service"))
+                        .uri("lb://product-query-service"))
+
+                .route("product-command-service", r -> r.path("/api/product/**", "/api/excel/**")
+                        .filters(f -> f.filter(jwtFilter))
+                        .uri("lb://product-command-service"))
 
                 .route("article-service", r -> r.path("/api/article/**")
                         .filters(f -> f.filter(jwtFilter))
