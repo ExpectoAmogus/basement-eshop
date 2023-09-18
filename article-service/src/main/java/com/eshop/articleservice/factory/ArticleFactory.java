@@ -7,7 +7,7 @@ import com.eshop.articleservice.models.enums.ArticleType;
 
 public interface ArticleFactory {
     BaseArticle createArticle(ArticleRequest articleRequest);
-    BaseArticle updateArticle(ArticleToUpdateRequest articleToUpdateRequest, Long id);
+    BaseArticle updateArticle(ArticleToUpdateRequest articleToUpdateRequest, BaseArticle existingArticle);
 
     ArticleType getArticleType();
 }

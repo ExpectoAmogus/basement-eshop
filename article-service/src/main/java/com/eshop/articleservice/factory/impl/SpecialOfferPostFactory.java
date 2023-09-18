@@ -20,13 +20,11 @@ public class SpecialOfferPostFactory implements ArticleFactory {
     }
 
     @Override
-    public BaseArticle updateArticle(ArticleToUpdateRequest articleToUpdateRequest, Long id) {
-        return SpecialOfferPost.builder()
-                .id(id)
-                .title(articleToUpdateRequest.title())
-                .subTitle(articleToUpdateRequest.subTitle())
-                .text(articleToUpdateRequest.text())
-                .build();
+    public BaseArticle updateArticle(ArticleToUpdateRequest articleToUpdateRequest, BaseArticle existingArticle) {
+        existingArticle.setTitle(articleToUpdateRequest.title());
+        existingArticle.setSubTitle(articleToUpdateRequest.subTitle());
+        existingArticle.setText(articleToUpdateRequest.text());
+        return existingArticle;
     }
 
     @Override
