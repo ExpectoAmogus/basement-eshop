@@ -15,7 +15,12 @@ public class InventoryListener {
     private final InventoryFacade inventoryFacade;
 
     @KafkaListener(topics = "product-topic", groupId = "inventoryId", containerFactory = "kafkaListenerContainerFactory")
-    public void create(@Payload InventoryRequest request) {
-        inventoryFacade.create(request);
+    public void handleEvent(@Payload InventoryRequest request) {
+        switch (request.getEventType()){
+            case PRODUCT_CREATED -> inventoryFacade.create(request);
+            case PRODUCT_UPDATED -> inventoryFacade.update(request);
+            case PRODUCT_DELETED -> inventoryFacade.delete(request);
+        }
+
     }
 }
