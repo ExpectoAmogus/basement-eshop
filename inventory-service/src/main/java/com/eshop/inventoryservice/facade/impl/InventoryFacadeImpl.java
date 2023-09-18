@@ -27,8 +27,8 @@ public class InventoryFacadeImpl implements InventoryFacade {
     }
 
     @Override
-    public void delete(String code) {
-        inventoryService.delete(code);
+    public void delete(InventoryRequest request) {
+        inventoryService.delete(request.getCode());
     }
 
     @Override
